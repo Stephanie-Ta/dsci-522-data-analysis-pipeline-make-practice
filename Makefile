@@ -1,10 +1,17 @@
 # Runs the entire analysis
 # usage: make all
+.PHONY : all \
+dats \
+plots \
+clean-dats \
+clean-figs \
+clean-report \
+clean
 
-all: report/count_report.html
+all : report/count_report.html
 
 # count words:
-dats: results/isles.dat \
+dats : results/isles.dat \
 results/abyss.dat \
 results/last.dat \
 results/sierra.dat
@@ -30,7 +37,7 @@ results/sierra.dat : scripts/wordcount.py data/sierra.txt
 		--output_file=results/sierra.dat
 
 # create the plots
-plots: results/figure/isles.png \
+plots : results/figure/isles.png \
 results/figure/abyss.png \
 results/figure/last.png \
 results/figure/sierra.png
@@ -38,22 +45,22 @@ results/figure/sierra.png
 results/figure/isles.png : scripts/plotcount.py results/isles.dat
 	python scripts/plotcount.py \
 	--input_file=results/isles.dat \
-	 --output_file=results/figure/isles.png
+	--output_file=results/figure/isles.png
 
 results/figure/abyss.png : scripts/plotcount.py results/abyss.dat
 	python scripts/plotcount.py \
 	--input_file=results/abyss.dat \
-	 --output_file=results/figure/abyss.png
+	--output_file=results/figure/abyss.png
 
 results/figure/last.png : scripts/plotcount.py results/last.dat
 	python scripts/plotcount.py \
 	--input_file=results/last.dat \
-	 --output_file=results/figure/last.png
+	--output_file=results/figure/last.png
 
 results/figure/isles.png : scripts/plotcount.py results/sierra.dat
 	python scripts/plotcount.py \
 	--input_file=results/sierra.dat \
-	 --output_file=results/figure/sierra.png
+	--output_file=results/figure/sierra.png
 
 # write the report
 report/count_report.html : report/count_report.qmd plots
@@ -75,6 +82,6 @@ clean-figs :
 clean-report :
 	rm -f report/count_report.html
 
-clean -all : clean-dats clean-figs
+clean: clean-dats clean-figs
 	rm -f report/count_report.html
 	rm -rf reort/count_report_files/
