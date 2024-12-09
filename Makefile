@@ -8,7 +8,7 @@ clean-figs \
 clean-report \
 clean
 
-all : report/count_report.html
+all : report/count_report.html  report/count_report_files
 
 # count words:
 dats : results/isles.dat \
@@ -63,7 +63,7 @@ results/figure/isles.png : scripts/plotcount.py results/sierra.dat
 	--output_file=results/figure/sierra.png
 
 # write the report
-report/count_report.html : report/count_report.qmd plots
+report/count_report.html report/count_report_files: report/count_report.qmd plots
 	quarto render report/count_report.qmd
 
 # clean output
@@ -81,7 +81,8 @@ clean-figs :
 
 clean-report :
 	rm -f report/count_report.html
+	rm -rf report/count_report_files/
 
-clean: clean-dats clean-figs
-	rm -f report/count_report.html
-	rm -rf reort/count_report_files/
+clean: clean-dats \
+clean-figs \
+clean-report
